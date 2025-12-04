@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scroll Video Smooth</title>
+<style>
+  body, html {
+    margin: 0;
+    height: 1500vh;
+    overflow-x: hidden;
+    background: black;
+  }
+  img {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    max-height: 90%;
+  }
+</style>
+</head>
+<body>
+
+<img id="frame" src="video/001.png" alt="Video Frame">
+
+<script>
+const totalFrames = 800; // Passe an deine Anzahl an
+const frameImg = document.getElementById('frame');
+const frames = [];
+
+// Alle Frames vorladen
+for (let i = 1; i <= totalFrames; i++) {
+  const img = new Image();
+  img.src = `video/${String(i).padStart(3, '0')}.png`;
+  frames.push(img);
+}
+
+let targetFrame = 1;
+let currentFrame = 1;
+const smoothFactor = 0.2; // etwas schneller reagieren, weniger Ruckeln
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.body.scrollHeight - window.innerHeight;
+  const scrollFraction = scrollTop / docHeight;
+  targetFrame = Math.min(totalFrames, Math.floor(scrollFraction * totalFrames) + 1);
+});
+
+function animate() {
+  // Sanftes Nachlaufen
+  currentFrame += (targetFrame - currentFrame) * smoothFactor;
+  const frameIndex = Math.floor(currentFrame) - 1; // Array-Index beginnt bei 0
+  frameImg.src = frames[frameIndex].src;
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+
+</body>
+</html>
