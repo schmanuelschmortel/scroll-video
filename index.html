@@ -23,23 +23,22 @@
 </head>
 <body>
 
-<img id="frame" src="video/001.png" alt="Video Frame">
+<img id="frame" src="video/001.jpg" alt="Video Frame">
 
 <script>
-const totalFrames = 800; // Passe an deine Anzahl an
+const totalFrames = 800;
 const frameImg = document.getElementById('frame');
 const frames = [];
 
-// Alle Frames vorladen
 for (let i = 1; i <= totalFrames; i++) {
   const img = new Image();
-  img.src = `video/${String(i).padStart(3, '0')}.png`;
+  img.src = `video/${String(i).padStart(3, '0')}.jpg`; // JPG!!
   frames.push(img);
 }
 
 let targetFrame = 1;
 let currentFrame = 1;
-const smoothFactor = 0.2; // etwas schneller reagieren, weniger Ruckeln
+const smoothFactor = 0.2;
 
 window.addEventListener('scroll', () => {
   const scrollTop = window.scrollY;
@@ -49,9 +48,8 @@ window.addEventListener('scroll', () => {
 });
 
 function animate() {
-  // Sanftes Nachlaufen
   currentFrame += (targetFrame - currentFrame) * smoothFactor;
-  const frameIndex = Math.floor(currentFrame) - 1; // Array-Index beginnt bei 0
+  const frameIndex = Math.floor(currentFrame) - 1;
   frameImg.src = frames[frameIndex].src;
   requestAnimationFrame(animate);
 }
